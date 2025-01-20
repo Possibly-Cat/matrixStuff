@@ -161,7 +161,7 @@ public class matrix{//Simple little class to handle basic matrix operations
         return(ret);
       }
 
-      public matrix projOntoOrth() throws Exception{//Creates projection vector onto the object orthogonal to the calling object
+      public matrix projOntoOrth() throws Exception{//Creates projection matrix onto the object orthogonal to the calling object
         matrix I = makeI(this.mat.length);
         matrix projInit = this.projOntoVect();
         projInit.scalarMult(-1);
@@ -169,7 +169,7 @@ public class matrix{//Simple little class to handle basic matrix operations
         return(I);
       }
 
-      public matrix householderFromOrth() throws Exception{
+      public matrix householderFromOrth() throws Exception{//Creates reflection matrix about the plane orthogonal to the calling object
         matrix I = makeI(this.mat.length);
         matrix projInit = this.projOntoVect();
         projInit.scalarMult(-2);
