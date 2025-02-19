@@ -4,6 +4,7 @@ public class refMat{
             double[][] M1 = {{1, 2, 3},{4,5,6},{7,8,9}};
             double[][] M2 = {{1,0,0},{0,1,0},{0,0,1}};
             double[][] M3 = {{0,0,0},{0,0,0},{0,0,0}};
+            double[][] M5 = {{1,3,3,8,5},{0,1,3,10,8},{0,0,0,-1,-4},{0,0,0,2,8}};
             double[][] Va = {{1}, {1},{1}, {1}};
             //These arrays represent the matrices. Each internal array is a new column, each item within an internal array is a new row.
 
@@ -12,6 +13,7 @@ public class refMat{
             matrix I = new matrix(M2);
             matrix O = new matrix(M3);
             matrix mat4 = mat1.duplicate();
+            matrix mat5 = new matrix(M5);
             matrix V1 = new matrix(Va);
             //Here I construct my matrices.
 
@@ -46,8 +48,15 @@ public class refMat{
             V.prntMat();
             System.out.println("The reflection matrix about the plane orthogonal to V is: ");
             V.householderFromOrth().prntMat();
+
+
+            System.out.println("\n --------------------------------- \n");
+            //System.out.println(mat5.determ());
+
+            mat5.RREF().prntMat();
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
