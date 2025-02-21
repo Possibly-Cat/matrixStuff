@@ -101,7 +101,10 @@ public class matrix{//Simple little class to handle basic matrix operations
       while(this.mat[yInc][x] == 0){
         rowOn++;
         yInc = nOfList(rowLst, rowOn);
-        if(yInc == -1 && x == this.mat[0].length - 1){return(this);}
+        if(yInc == -1 && x == this.mat[0].length - 1){
+          this.makeRowPivotsOne();
+          return(this);
+        }
         if(yInc == -1){
           x += 1;
           yInc = nOfList(rowLst, 1);
@@ -120,6 +123,7 @@ public class matrix{//Simple little class to handle basic matrix operations
         return(this);
       }
     }
+    this.makeRowPivotsOne();
     return(this);
   }
 
