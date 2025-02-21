@@ -60,10 +60,10 @@ public class matrix{//Simple little class to handle basic matrix operations
     return(this);
   }
 
-  public static int nOfList(int[] list, int n){//Simple helper function for RREF(). Finds the nth non -1 entry of a list
+  public static int nOfList(int[] list, int n, int notThis){//Simple helper function for RREF(). Finds the nth non 'notThis' entry of a list
     int adder = 0;
     for(int z:list){
-      if(z != -1){
+      if(z != notThis){
         adder++;
         if(adder == n){return(z);}
       }
@@ -71,7 +71,18 @@ public class matrix{//Simple little class to handle basic matrix operations
     return(-1);
   }
 
-  public static double nOfRow(double[] list, int n){//Simple helper function for RREF(). Finds the nth non 0 entry of a row
+  public static int nIndexOfList(double[] list, int n, int notThis){//Simple helper function for RREF(). Finds the index of the nth non 'notThis' entry of a list
+    int adder = 0;
+    for(int x = 0; x < list.length; x++){
+      if(list[x] != notThis){
+        adder++;
+        if(adder == n){return(x);}
+      }
+    }
+    return(10000000);
+  }
+
+  public static double nOfRow(double[] list, int n){//Simple helper function for RREF(). Finds the nth non 0 entry of a row. Takes doubles as opposed to nOfList which takes ints
     int adder = 0;
     for(double z:list){
       if(z != 0){
@@ -88,7 +99,15 @@ public class matrix{//Simple little class to handle basic matrix operations
     }
   }
 
-  public matrix RREF(){//Program to RREF any matrix using elementery row operations
+  public void rowPivotOrderer(){//Uses quick sort to order the rows of a matrix into RREF order
+    int[] pivotIndeces = new int[this.mat.length];
+    for(int y = 0; y < this.mat.length; y++){
+      pivotIndeces[y] = nIndexOfList(this.mat[y], 1, 0);
+    }
+    Quick.quickSort(pivotIndeces, this.mat);
+  }
+
+  public matrix RREF(){//Program to RREF any matrix using elementery row operations. Will place zero rows not at bottom for matrices with >= 10000000 rows
     int yInc = 0;
     int rowOn = 0;
     int[] rowLst = new int[this.mat.length];
@@ -96,18 +115,19 @@ public class matrix{//Simple little class to handle basic matrix operations
       rowLst[z] = z;
     }
     for(int x = 0; x < this.mat[0].length; x++){
-      yInc = nOfList(rowLst, 1);
+      yInc = nOfList(rowLst, 1,  -1);
       rowOn = 1;
       while(this.mat[yInc][x] == 0){
         rowOn++;
-        yInc = nOfList(rowLst, rowOn);
+        yInc = nOfList(rowLst, rowOn, -1);
         if(yInc == -1 && x == this.mat[0].length - 1){
           this.makeRowPivotsOne();
+          this.rowPivotOrderer();
           return(this);
         }
         if(yInc == -1){
           x += 1;
-          yInc = nOfList(rowLst, 1);
+          yInc = nOfList(rowLst, 1, -1);
           rowOn = 1;
         }
       }
@@ -118,12 +138,14 @@ public class matrix{//Simple little class to handle basic matrix operations
         }
       }
       rowLst[yInc] = -1;
-      if (nOfList(rowLst, 1) == -1){
+      if (nOfList(rowLst, 1, -1) == -1){
         this.makeRowPivotsOne();
+        this.rowPivotOrderer();
         return(this);
       }
     }
     this.makeRowPivotsOne();
+    this.rowPivotOrderer();
     return(this);
   }
 
